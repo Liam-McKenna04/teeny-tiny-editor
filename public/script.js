@@ -24,8 +24,8 @@ const processWikiLinks = (content) => {
 };
 
 const loadPage = (page) => {
-    const content = localStorage.getItem(`page:${page}`) || '<p></p>';
-    editor.content.innerHTML = processWikiLinks(content);
+    const content = localStorage.getItem(`page:${page}`);
+    editor.content.innerHTML = content ? processWikiLinks(content) : '';
     document.title = `${page} - Teeny Tiny Wiki`;
 };
 

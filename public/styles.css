@@ -179,6 +179,10 @@ html.dark-mode body {
     pointer-events: none;
 }
 
-.dark-mode .pell-content[data-placeholder]:empty:before {
+.pell-content:focus p:first-child:last-child:empty {
+    display: none;
+}
+
+.dark-mode .pell-content[data-placeholder]:not(:focus):before {
     color: #666;
 }
