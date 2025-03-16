@@ -168,3 +168,17 @@ html.dark-mode body {
     border-bottom: 1px solid #ff958d;
     background-color: rgba(255, 123, 114, 0.1);
 }
+
+.pell-content[data-placeholder]:empty:before {
+    content: attr(data-placeholder);
+    color: #999;
+    font-style: italic;
+    position: absolute;
+    margin-top: -0.03em;
+    margin-left: 0.1em;
+    pointer-events: none;
+}
+
+.dark-mode .pell-content[data-placeholder]:empty:before {
+    color: #666;
+}

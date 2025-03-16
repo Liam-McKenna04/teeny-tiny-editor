@@ -3,6 +3,9 @@ const editor = window.pell.init({
     actions: []
 });
 
+// Set placeholder for the editor
+editor.content.setAttribute('data-placeholder', 'Start typing...');
+
 const getCurrentPage = () => {
     const path = window.location.pathname.substring(1);
     return decodeURIComponent(path) || 'home';
@@ -21,7 +24,7 @@ const processWikiLinks = (content) => {
 };
 
 const loadPage = (page) => {
-    const content = localStorage.getItem(`page:${page}`) || '<p>Start typing...</p>';
+    const content = localStorage.getItem(`page:${page}`) || '<p></p>';
     editor.content.innerHTML = processWikiLinks(content);
     document.title = `${page} - Teeny Tiny Wiki`;
 };
