@@ -18,8 +18,19 @@ body {
 .pell-content {
     flex: 1;
     padding: 20px;
+    padding-bottom: 70px;
     overflow-y: auto;
+    width: 750px;
+    margin: 0 auto;
+    text-align: left;
+    line-height: 1.5;
 }
+
+.pell-content p {
+    margin-bottom: 1em;
+}
+
+
 
 .pell-actionbar {
     display: none;
@@ -67,4 +78,42 @@ h1 {
     border-radius: 4px;
     font-family: monospace;
     white-space: pre-wrap;
+}
+
+/* Dark mode styles */
+html.dark-mode {
+    background-color: #1a1a1a;
+}
+
+html.dark-mode body {
+    background-color: #1a1a1a;
+}
+
+.dark-mode .container {
+    background-color: #1a1a1a;
+}
+
+.dark-mode .pell-content {
+    color: #ffffff;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    border-radius: 1px;
+    border: none;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    color: #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.dark-mode .theme-toggle {
+    background-color: #333;
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
