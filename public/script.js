@@ -1,21 +1,17 @@
-// Initialize the editor
 const editor = window.pell.init({
     element: document.getElementById('editor'),
     actions: []
 });
 
-// Get current page from URL or default to 'home'
 const getCurrentPage = () => {
     const path = window.location.pathname.substring(1);
     return decodeURIComponent(path) || 'home';
 };
 
-// Update URL without reloading
 const updateURL = (page) => {
     window.history.pushState({}, page, `/${encodeURIComponent(page)}`);
 };
 
-// Convert WikiLinks to HTML
 const processWikiLinks = (content) => {
     return content.replace(/\[\[(.*?)\]\]/g, (match, pageName) => {
         const exists = localStorage.getItem(`page:${pageName}`) !== null;
@@ -24,23 +20,19 @@ const processWikiLinks = (content) => {
     });
 };
 
-// Load page content
 const loadPage = (page) => {
     const content = localStorage.getItem(`page:${page}`) || '<p>Start typing...</p>';
     editor.content.innerHTML = processWikiLinks(content);
     document.title = `${page} - Teeny Tiny Wiki`;
 };
 
-// Save page content
 const savePage = (page, content) => {
     localStorage.setItem(`page:${page}`, content);
 };
 
-// Initialize the current page
 let currentPage = getCurrentPage();
 loadPage(currentPage);
 
-// Process wiki links after typing
 let processTimeout;
 editor.content.addEventListener('input', () => {
     const content = editor.content.innerHTML;
@@ -65,25 +57,29 @@ editor.content.addEventListener('input', () => {
         // Check if we just completed a wiki link
         if (beforeCursor.match(/\[\[[^\]]+\]\]$/)) {
             const parent = cursorNode.parentNode;
+            const originalHTML = parent.innerHTML;
             parent.innerHTML = processWikiLinks(parent.innerHTML);
             
-            // Place cursor at the end of the parent node
-            const newRange = document.createRange();
-            newRange.selectNodeContents(parent);
-            newRange.collapse(false);
-            sel.removeAllRanges();
-            sel.addRange(newRange);
+            // Find the last wiki link in the parent node
+            const wikiLinks = parent.getElementsByClassName('wiki-link');
+            if (wikiLinks.length > 0) {
+                const lastLink = wikiLinks[wikiLinks.length - 1];
+                // Place cursor after the last wiki link
+                const newRange = document.createRange();
+                newRange.setStartAfter(lastLink);
+                newRange.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(newRange);
+            }
         }
     }, 100);
 });
 
-// Handle navigation
 window.addEventListener('popstate', () => {
     currentPage = getCurrentPage();
     loadPage(currentPage);
 });
 
-// Handle clicks on wiki links
 document.addEventListener('click', (e) => {
     const link = e.target.closest('.wiki-link, .new-page-link');
     if (link) {
@@ -95,20 +91,17 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Handle tab key
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Tab' && document.activeElement === editor.content) {
         e.preventDefault();
         e.stopPropagation();
-        document.execCommand('insertText', false, '    '); // Insert 4 spaces
+        document.execCommand('insertText', false, '    '); // Insert 4 spaces as a tab
     }
 }, true);
 
-// Theme toggle functionality
 const themeToggle = document.getElementById('theme-toggle');
 const root = document.documentElement;
 
-// Check for saved theme preference and update button text
 const isDark = root.classList.contains('dark-mode');
 themeToggle.textContent = isDark ? 'Dark' : 'Light';
 
