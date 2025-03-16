@@ -115,3 +115,57 @@ html.dark-mode body {
     background-color: #333;
     color: #fff;
 }
+
+/* Wiki link styles */
+.wiki-link {
+    color: #0366d6;
+    text-decoration: none;
+    border-bottom: 1px dashed #0366d6;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.wiki-link:hover {
+    color: #0246a2;
+    border-bottom: 1px solid #0246a2;
+    background-color: rgba(3, 102, 214, 0.1);
+}
+
+.dark-mode .wiki-link {
+    color: #58a6ff;
+    border-bottom: 1px dashed #58a6ff;
+    cursor: pointer;
+}
+
+.dark-mode .wiki-link:hover {
+    color: #79b8ff;
+    border-bottom: 1px solid #79b8ff;
+    background-color: rgba(88, 166, 255, 0.1);
+}
+
+/* New page link styles */
+.new-page-link {
+    color: #d73a49;
+    text-decoration: none;
+    border-bottom: 1px dashed #d73a49;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.new-page-link:hover {
+    color: #b92d3a;
+    border-bottom: 1px solid #b92d3a;
+    background-color: rgba(215, 58, 73, 0.1);
+}
+
+.dark-mode .new-page-link {
+    color: #ff7b72;
+    border-bottom: 1px dashed #ff7b72;
+    cursor: pointer;
+}
+
+.dark-mode .new-page-link:hover {
+    color: #ff958d;
+    border-bottom: 1px solid #ff958d;
+    background-color: rgba(255, 123, 114, 0.1);
+}
