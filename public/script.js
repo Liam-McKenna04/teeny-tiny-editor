@@ -3,7 +3,23 @@ window.pell.init({
     actions: []
 });
 
-editor.content.innerHTML = '<p>Start typing...</p>';
+// Load saved content from localStorage or use default
+const savedContent = localStorage.getItem('editorContent') || '<p>Start typing...</p>';
+editor.content.innerHTML = savedContent;
+
+// Save content to localStorage whenever it changes
+editor.content.addEventListener('input', () => {
+    localStorage.setItem('editorContent', editor.content.innerHTML);
+});
+
+// Add tab key handling
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab' && document.activeElement === editor.content) {
+        e.preventDefault();
+        e.stopPropagation();
+        document.execCommand('insertText', false, '    '); // Insert 4 spaces
+    }
+}, true);
 
 // Theme toggle functionality
 const themeToggle = document.getElementById('theme-toggle');
