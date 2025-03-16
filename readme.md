@@ -1,0 +1,1 @@
+The smallest text editor I can make with the features I want lol
