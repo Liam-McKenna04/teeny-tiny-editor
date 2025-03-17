@@ -6,31 +6,39 @@ const editor = window.pell.init({
 // Set placeholder for the editor
 editor.content.setAttribute('data-placeholder', 'Start typing...');
 
+const formatPageName = (pageName) => {
+    return pageName.trim().replace(/\s+/g, '-');
+};
+
 const getCurrentPage = () => {
     const path = window.location.pathname.substring(1);
     return decodeURIComponent(path) || 'home';
 };
 
 const updateURL = (page) => {
-    window.history.pushState({}, page, `/${encodeURIComponent(page)}`);
+    const formattedPage = formatPageName(page);
+    window.history.pushState({}, formattedPage, `/${encodeURIComponent(formattedPage)}`);
 };
 
 const processWikiLinks = (content) => {
     return content.replace(/\[\[(.*?)\]\]/g, (match, pageName) => {
-        const exists = localStorage.getItem(`page:${pageName}`) !== null;
-        const className ='wiki-link';
-        return `<a href="/${encodeURIComponent(pageName)}" class="${className}" data-page="${pageName}">${pageName}</a>`;
+        const formattedPage = formatPageName(pageName);
+        const exists = localStorage.getItem(`page:${formattedPage}`) !== null;
+        const className = 'wiki-link';
+        return `<a href="/${encodeURIComponent(formattedPage)}" class="${className}" data-page="${formattedPage}">${pageName}</a>`;
     });
 };
 
 const loadPage = (page) => {
-    const content = localStorage.getItem(`page:${page}`);
+    const formattedPage = formatPageName(page);
+    const content = localStorage.getItem(`page:${formattedPage}`);
     editor.content.innerHTML = content ? processWikiLinks(content) : '';
-    document.title = `${page} - Teeny Tiny Wiki`;
+    document.title = `${formattedPage} - Teeny Tiny Wiki`;
 };
 
 const savePage = (page, content) => {
-    localStorage.setItem(`page:${page}`, content);
+    const formattedPage = formatPageName(page);
+    localStorage.setItem(`page:${formattedPage}`, content);
 };
 
 let currentPage = getCurrentPage();
