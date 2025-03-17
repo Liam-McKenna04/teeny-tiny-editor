@@ -1,6 +1,10 @@
 const editor = window.pell.init({
     element: document.getElementById('editor'),
-    actions: []
+    actions: [],
+    onChange: html => {
+        const content = editor.content.innerHTML;
+        savePage(currentPage, content);
+    }
 });
 
 // Set placeholder for the editor
@@ -33,7 +37,7 @@ const loadPage = (page) => {
     const formattedPage = formatPageName(page);
     const content = localStorage.getItem(`page:${formattedPage}`);
     editor.content.innerHTML = content ? processWikiLinks(content) : '';
-    document.title = `${formattedPage} - Teeny Tiny Wiki`;
+    document.title = `${formattedPage} - Teeny Tiny Editor`;
 };
 
 const savePage = (page, content) => {
@@ -45,7 +49,10 @@ let currentPage = getCurrentPage();
 loadPage(currentPage);
 
 let processTimeout;
+let isProcessing = false;
 editor.content.addEventListener('input', () => {
+    if (isProcessing) return;
+    
     const content = editor.content.innerHTML;
     savePage(currentPage, content);
     
@@ -67,6 +74,7 @@ editor.content.addEventListener('input', () => {
         
         // Check if we just completed a wiki link
         if (beforeCursor.match(/\[\[[^\]]+\]\]$/)) {
+            isProcessing = true;
             const parent = cursorNode.parentNode;
             const originalHTML = parent.innerHTML;
             parent.innerHTML = processWikiLinks(parent.innerHTML);
@@ -82,6 +90,7 @@ editor.content.addEventListener('input', () => {
                 sel.removeAllRanges();
                 sel.addRange(newRange);
             }
+            isProcessing = false;
         }
     }, 100);
 });
